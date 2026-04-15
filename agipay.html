@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AGIKIDOT • Premium Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            color: #1a2a3a;
+        }
+
+        /* Navbar Biru */
+        .navbar {
+            background: linear-gradient(135deg, #1e3a5f, #0f2b44);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #1e3a5f;
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 40px;
+            transition: 0.2s;
+            font-weight: 600;
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item i {
+            margin-right: 8px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: white;
+            color: #1e3a5f;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.15);
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e3a5f;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Tombol Titik Tiga */
+        .menu-dots {
+            position: relative;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .menu-dots:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .menu-dots i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 55px;
+            right: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 220px;
+            z-index: 200;
+            display: none;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-item {
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1a2a3a;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: #f0f4f8;
+        }
+
+        .dropdown-item i {
+            width: 24px;
+            color: #1e3a5f;
+            font-size: 18px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 5px 0;
+        }
+
+        /* Modal User Online */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #1e3a5f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .online-user-list {
+            list-style: none;
+        }
+
+        .online-user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .online-user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1e3a5f, #0f2b44);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .online-user-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .online-badge {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .close-modal {
+            margin-top: 20px;
+            background: #e2e8f0;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Banner */
+        .banner-container {
+            margin: 20px;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px 20px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #dce5f0;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-item i {
+            font-size: 28px;
+            color: #1e3a5f;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e3a5f;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c86a3;
+        }
+
+        /* Grid Produk */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: 0.25s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-img {
+            height: 200px;
+            background: #f5f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-img .no-img {
+            font-size: 48px;
+            color: #1e3a5f;
+            opacity: 0.5;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: #1e3a5f;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: #6c86a3;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .product-seller {
+            font-size: 11px;
+            color: #8899bb;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .btn-buy {
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            width: 100%;
+            margin-top: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-buy:hover {
+            background: #0f2b44;
+        }
+
+        /* Form Jual */
+        .form-card {
+            background: white;
+            border-radius: 28px;
+            padding: 30px;
+            max-width: 650px;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #1e3a5f;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 2px rgba(30,58,95,0.1);
+        }
+
+        .file-input {
+            padding: 10px;
+            background: #f8fafc;
+            border: 1px dashed #1e3a5f;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a5f, #0f2b44);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary i {
+            margin-right: 8px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #6c86a3;
+            background: white;
+            border-radius: 28px;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #1e3a5f;
+            opacity: 0.5;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e3a5f;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            z-index: 1100;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .stats-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-store"></i></div>
+            <div class="logo-text">AGIKIDOT</div>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-item active" data-tab="beranda"><i class="fas fa-home"></i> Beranda</div>
+            <div class="nav-item" data-tab="jual"><i class="fas fa-plus-circle"></i> Jual Produk</div>
+            <div class="nav-item" data-tab="profilku"><i class="fas fa-box"></i> Produkku</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="user-info" id="userInfo">
+                <div class="avatar" id="avatarBtn"><i class="fas fa-user"></i></div>
+                <span id="userNameDisplay" style="color:white;"></span>
+                <button class="logout-btn" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+            </div>
+            <!-- Tombol Titik Tiga -->
+            <div class="menu-dots" id="menuDotsBtn">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-item" id="csAdminBtn">
+            <i class="fab fa-instagram"></i>
+            <span>CS Admin <i class="fas fa-external-link-alt" style="font-size: 10px;"></i></span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item" id="userOnlineBtn">
+            <i class="fas fa-users"></i>
+            <span>User Online <span id="onlineCountBadge" style="background:#22c55e; color:white; padding:2px 8px; border-radius:20px; margin-left:8px; font-size:11px;">0</span></span>
+        </div>
+    </div>
+
+    <!-- Banner -->
+    <div class="banner-container">
+        <img id="bannerImage" class="banner-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='300' viewBox='0 0 1200 300'%3E%3Crect width='1200' height='300' fill='%231e3a5f'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='42' font-weight='bold' dy='.3em'%3E🔥 AGIKIDOT MARKETPLACE 🔥%3C/text%3E%3C/svg%3E" alt="Banner">
+    </div>
+
+    <div class="container">
+        <div class="stats-bar">
+            <div class="stat-item"><i class="fas fa-users"></i><div><div class="stat-value" id="totalUsers">0</div><div class="stat-label">Total User</div></div></div>
+            <div class="stat-item"><i class="fas fa-box-open"></i><div><div class="stat-value" id="totalProducts">0</div><div class="stat-label">Total Produk</div></div></div>
+            <div class="stat-item"><i class="fas fa-chart-line"></i><div><div class="stat-value" id="activeToday">0</div><div class="stat-label">Aktif Hari Ini</div></div></div>
+        </div>
+
+        <div id="berandaTab" class="tab-content active"><div class="products-grid" id="productsGrid"></div></div>
+        <div id="jualTab" class="tab-content">
+            <div class="form-card">
+                <h3 style="margin-bottom: 20px; color:#1e3a5f;"><i class="fas fa-cloud-upload-alt"></i> Jual Produk Baru</h3>
+                <div class="form-group"><label><i class="fas fa-tag"></i> Nama Produk</label><input type="text" id="productName" placeholder="Contoh: Sepatu Sneakers"></div>
+                <div class="form-group"><label><i class="fas fa-money-bill-wave"></i> Harga (Rp)</label><input type="number" id="productPrice" placeholder="100000"></div>
+                <div class="form-group"><label><i class="fas fa-align-left"></i> Deskripsi</label><textarea id="productDesc" rows="3" placeholder="Deskripsi produk..."></textarea></div>
+                <div class="form-group"><label><i class="fas fa-image"></i> Upload Gambar Produk</label><input type="file" id="productImage" accept="image/*" class="file-input"></div>
+                <div id="imagePreview" class="image-preview" style="display:none;"><img id="previewImg" src=""></div>
+                <button class="btn-primary" id="submitProductBtn"><i class="fas fa-store"></i> + Jual Sekarang</button>
+            </div>
+        </div>
+        <div id="profilkuTab" class="tab-content"><div class="products-grid" id="myProductsGrid"></div></div>
+    </div>
+
+    <!-- Modal User Online -->
+    <div id="userOnlineModal" class="modal hidden">
+        <div class="modal-content">
+            <h2><i class="fas fa-users"></i> User Online <span id="onlineCountTitle">0</span></h2>
+            <ul class="online-user-list" id="onlineUserList"></ul>
+            <button class="close-modal" id="closeOnlineModal"><i class="fas fa-times"></i> Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal Login/Register -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content"><h2><i class="fas fa-sign-in-alt"></i> Login AGIKIDOT</h2>
+            <input type="text" id="loginUsername" placeholder="Username"><input type="password" id="loginPassword" placeholder="Password">
+            <button class="btn-primary" id="doLoginBtn"><i class="fas fa-key"></i> Login</button><div class="switch-mode" id="toRegisterBtn">Belum punya akun? Daftar</div>
+        </div>
+    </div>
+    <div id="registerModal" class="modal hidden">
+        <div class="modal-content"><h2><i class="fas fa-user-plus"></i> Daftar AGIKIDOT</h2>
+            <input type="text" id="regUsername" placeholder="Username"><input type="password" id="regPassword" placeholder="Password (min 3)">
+            <input type="text" id="regDisplayName" placeholder="Nama lengkap"><button class="btn-primary" id="doRegisterBtn"><i class="fas fa-check-circle"></i> Daftar</button>
+            <div class="switch-mode" id="toLoginBtn">Sudah punya akun? Login</div>
+        </div>
+    </div>
+    <div id="toastMsg" class="toast"></div>
+
+    <script>
+        // ======================== KONFIGURASI ========================
+        const INSTAGRAM_URL = "https://instagram.com/agikidot";
+        
+        let users = JSON.parse(localStorage.getItem('agikidot_users')) || [];
+        let products = JSON.parse(localStorage.getItem('agikidot_products')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('agikidot_current')) || null;
+        let onlineUsers = JSON.parse(localStorage.getItem('agikidot_online')) || [];
+
+        // Update online users (setiap user yang login tercatat)
+        function updateOnlineUsers() {
+            if(currentUser) {
+                const existing = onlineUsers.find(u => u.username === currentUser.username);
+                if(!existing) {
+                    onlineUsers.push({ username: currentUser.username, displayName: currentUser.displayName, lastActive: new Date().toISOString() });
+                } else {
+                    existing.lastActive = new Date().toISOString();
+                }
+                // Hapus user yang tidak aktif lebih dari 5 menit
+                const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
+                onlineUsers = onlineUsers.filter(u => new Date(u.lastActive) > fiveMinsAgo);
+                localStorage.setItem('agikidot_online', JSON.stringify(onlineUsers));
+            }
+        }
+
+        // Hapus online user saat logout
+        function removeOnlineUser() {
+            if(currentUser) {
+                onlineUsers = onlineUsers.filter(u => u.username !== currentUser.username);
+                localStorage.setItem('agikidot_online', JSON.stringify(onlineUsers));
+            }
+        }
+
+        // Tampilkan user online
+        function showOnlineUsers() {
+            updateOnlineUsers();
+            const modal = document.getElementById('userOnlineModal');
+            const listEl = document.getElementById('onlineUserList');
+            const countTitle = document.getElementById('onlineCountTitle');
+            const countBadge = document.getElementById('onlineCountBadge');
+            
+            countTitle.innerText = onlineUsers.length;
+            if(countBadge) countBadge.innerText = onlineUsers.length;
+            
+            if(onlineUsers.length === 0) {
+                listEl.innerHTML = '<div style="text-align:center; padding:20px; color:#6c86a3;"><i class="fas fa-user-slash"></i> Tidak ada user online</div>';
+            } else {
+                listEl.innerHTML = onlineUsers.map(u => `
+                    <li class="online-user-item">
+                        <div class="online-user-avatar">${u.displayName ? u.displayName.charAt(0).toUpperCase() : 'U'}</div>
+                        <div class="online-user-name">${escapeHtml(u.displayName || u.username)} <span class="online-badge"></span></div>
+                        <i class="fas fa-circle" style="color:#22c55e; font-size:10px;"></i>
+                    </li>
+                `).join('');
+            }
+            modal.classList.remove('hidden');
+        }
+
+        // Data awal - produk kosong (0)
+        if(products.length === 0) {
+            products = [];
+            localStorage.setItem('agikidot_products', JSON.stringify(products));
+        }
+        if(users.length === 0) { 
+            users.push({ username: "admin", password: "admin123", displayName: "AGIKIDOT Official" }); 
+            localStorage.setItem('agikidot_users', JSON.stringify(users)); 
+        }
+
+        function saveUsers() { localStorage.setItem('agikidot_users', JSON.stringify(users)); }
+        function saveProducts() { localStorage.setItem('agikidot_products', JSON.stringify(products)); }
+        function showToast(msg, err=false) { let t=document.getElementById('toastMsg'); t.innerText=msg; t.style.background=err?'#d32f2f':'#1e3a5f'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+        function formatRupiah(angka){ return new Intl.NumberFormat('id-ID').format(angka); }
+        function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+        function renderAllProducts(){
+            let grid=document.getElementById('productsGrid');
+            if(!grid) return;
+            if(products.length===0){ 
+                grid.innerHTML=`<div class="empty-state"><i class="fas fa-store-slash"></i><h3>Belum Ada Produk</h3><p>Jadilah yang pertama menjual produk di AGIKIDOT!</p></div>`; 
+                return; 
+            }
+            grid.innerHTML=products.map(p=>`<div class="product-card"><div class="product-img">${p.image ? `<img src="${p.image}">` : `<div class="no-img"><i class="fas fa-image"></i></div>`}</div><div class="product-info"><div class="product-name">${escapeHtml(p.name)}</div><div class="product-price">Rp ${formatRupiah(p.price)}</div><div class="product-desc">${escapeHtml(p.desc.substring(0,80))}</div><div class="product-seller"><i class="fas fa-user-circle"></i> ${escapeHtml(p.sellerName)}</div>${currentUser ? `<button class="btn-buy" data-id="${p.id}"><i class="fas fa-shopping-cart"></i> Beli</button>` : ''}</div></div>`).join('');
+            document.querySelectorAll('.btn-buy').forEach(btn=>btn.addEventListener('click',()=>showToast(`✅ Tertarik dengan produk ini? Hubungi penjual!`)));
+        }
+
+        function renderMyProducts(){
+            let grid=document.getElementById('myProductsGrid');
+            if(!grid) return;
+            if(!currentUser){ grid.innerHTML='<div class="empty-state"><i class="fas fa-lock"></i><h3>Login Dulu</h3><p>Silakan login untuk melihat produkmu</p></div>'; return; }
+            let myProds=products.filter(p=>p.sellerId===currentUser.username);
+            if(myProds.length===0){ grid.innerHTML='<div class="empty-state"><i class="fas fa-box-open"></i><h3>Belum Punya Produk</h3><p>Klik "Jual Produk" untuk mulai berjualan</p></div>'; return; }
+            grid.innerHTML=myProds.map(p=>`<div class="product-card"><div class="product-img">${p.image ? `<img src="${p.image}">` : `<div class="no-img"><i class="fas fa-image"></i></div>`}</div><div class="product-info"><div class="product-name">${escapeHtml(p.name)}</div><div class="product-price">Rp ${formatRupiah(p.price)}</div><div class="product-desc">${escapeHtml(p.desc)}</div><button class="btn-delete" data-id="${p.id}" style="background:#dc2626; color:white; border:none; padding:8px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer;"><i class="fas fa-trash"></i> Hapus</button></div></div>`).join('');
+            document.querySelectorAll('.btn-delete').forEach(btn=>btn.addEventListener('click',()=>{let id=btn.getAttribute('data-id'); if(confirm('Hapus produk?')){ products=products.filter(p=>p.id!==id); saveProducts(); renderMyProducts(); renderAllProducts(); updateStats(); showToast('Produk dihapus'); }}));
+        }
+
+        function addProduct(name, price, desc, imageBase64){
+            if(!currentUser){ showToast('Login dulu!',true); return false; }
+            if(!name || price<=0){ showToast('Nama & harga harus diisi',true); return false; }
+            let newId='p'+Date.now()+Math.random().toString(36).substr(2,4);
+            products.push({ id:newId, name, price:parseInt(price), desc:desc||'Produk jualan', image:imageBase64||'', sellerId:currentUser.username, sellerName:currentUser.displayName });
+            saveProducts(); renderAllProducts(); renderMyProducts(); updateStats(); showToast('✅ Produk berhasil dijual!'); return true;
+        }
+
+        function updateStats(){ 
+            document.getElementById('totalUsers').innerText=users.length; 
+            document.getElementById('totalProducts').innerText=products.length; 
+            document.getElementById('activeToday').innerText=onlineUsers.length || 1;
+        }
+        
+        function register(u,p,n){ 
+            if(u.length<3||p.length<3){ showToast('Minimal 3 karakter',true); return false; } 
+            if(users.find(x=>x.username===u)){ showToast('Username sudah dipakai',true); return false; } 
+            users.push({ username:u, password:p, displayName:n||u }); 
+            saveUsers(); showToast('✅ Daftar berhasil! Silakan login'); 
+            return true; 
+        }
+        
+        function login(u,p){ 
+            let user=users.find(x=>x.username===u && x.password===p); 
+            if(user){ 
+                currentUser={ username:user.username, displayName:user.displayName }; 
+                localStorage.setItem('agikidot_current',JSON.stringify(currentUser)); 
+                updateOnlineUsers();
+                updateUI(); 
+                renderAllProducts(); 
+                renderMyProducts(); 
+                updateStats(); 
+                showToast(`👋 Selamat datang, ${currentUser.displayName}!`); 
+                return true; 
+            } else { 
+                showToast('Username/password salah',true); 
+                return false; 
+            } 
+        }
+        
+        function logout(){ 
+            removeOnlineUser();
+            currentUser=null; 
+            localStorage.removeItem('agikidot_current'); 
+            updateUI(); 
+            renderAllProducts(); 
+            renderMyProducts(); 
+            updateStats();
+            showToast('🔓 Logout berhasil'); 
+        }
+        
+        function updateUI(){ 
+            let nameSpan=document.getElementById('userNameDisplay'), logoutBtn=document.getElementById('logoutBtn'), avatar=document.getElementById('avatarBtn'); 
+            if(currentUser){ 
+                nameSpan.innerText=currentUser.displayName; 
+                logoutBtn.style.display='inline-block'; 
+                avatar.innerHTML=currentUser.displayName.charAt(0).toUpperCase(); 
+            } else { 
+                nameSpan.innerText=''; 
+                logoutBtn.style.display='none'; 
+                avatar.innerHTML='<i class="fas fa-user"></i>'; 
+            } 
+        }
+        
+        function switchTab(tabId){ 
+            document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active')); 
+            document.getElementById(`${tabId}Tab`).classList.add('active'); 
+            document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); 
+            document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active'); 
+            if(tabId==='beranda') renderAllProducts(); 
+            if(tabId==='profilku') renderMyProducts(); 
+        }
+
+        // Dropdown menu
+        const menuDotsBtn = document.getElementById('menuDotsBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        
+        menuDotsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+        
+        document.addEventListener('click', () => {
+            dropdownMenu.classList.remove('show');
+        });
+        
+        dropdownMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
+        // CS Admin - buka Instagram
+        document.getElementById('csAdminBtn').addEventListener('click', () => {
+            window.open(INSTAGRAM_URL, '_blank');
+            dropdownMenu.classList.remove('show');
+        });
+        
+        // User Online
+        document.getElementById('userOnlineBtn').addEventListener('click', () => {
+            showOnlineUsers();
+            dropdownMenu.classList.remove('show');
+        });
+        
+        // Modal close
+        document.getElementById('closeOnlineModal').addEventListener('click', () => {
+            document.getElementById('userOnlineModal').classList.add('hidden');
+        });
+
+        // Event listeners login/register
+        document.getElementById('doLoginBtn').onclick=()=>{ let u=document.getElementById('loginUsername').value.trim(), p=document.getElementById('loginPassword').value; if(login(u,p)){ document.getElementById('loginModal').classList.add('hidden'); } };
+        document.getElementById('doRegisterBtn').onclick=()=>{ let u=document.getElementById('regUsername').value.trim(), p=document.getElementById('regPassword').value, n=document.getElementById('regDisplayName').value.trim(); if(register(u,p,n)){ document.getElementById('registerModal').classList.add('hidden'); document.getElementById('loginModal').classList.remove('hidden'); } };
+        document.getElementById('toRegisterBtn').onclick=()=>{ document.getElementById('loginModal').classList.add('hidden'); document.getElementById('registerModal').classList.remove('hidden'); };
+        document.getElementById('toLoginBtn').onclick=()=>{ document.getElementById('registerModal').classList.add('hidden'); document.getElementById('loginModal').classList.remove('hidden'); };
+        document.getElementById('logoutBtn').onclick=()=>logout();
+        document.getElementById('avatarBtn').onclick=()=>{ if(!currentUser) document.getElementById('loginModal').classList.remove('hidden'); };
+        document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>switchTab(i.getAttribute('data-tab'))));
+
+        let selectedImageBase64=null;
+        document.getElementById('productImage').addEventListener('change',function(e){
+            let file=e.target.files[0]; if(file){ let reader=new FileReader(); reader.onload=function(ev){ selectedImageBase64=ev.target.result; let preview=document.getElementById('imagePreview'); preview.style.display='block'; document.getElementById('previewImg').src=selectedImageBase64; }; reader.readAsDataURL(file); }
+        });
+        
+        document.getElementById('submitProductBtn').onclick=()=>{
+            let name=document.getElementById('productName').value.trim(), price=document.getElementById('productPrice').value, desc=document.getElementById('productDesc').value.trim();
+            addProduct(name,price,desc,selectedImageBase64);
+            document.getElementById('productName').value=''; document.getElementById('productPrice').value=''; document.getElementById('productDesc').value=''; document.getElementById('productImage').value=''; selectedImageBase64=null; document.getElementById('imagePreview').style.display='none';
+            switchTab('profilku');
+        };
+        
+        // Update online users setiap 30 detik
+        setInterval(() => {
+            if(currentUser) updateOnlineUsers();
+            updateStats();
+        }, 30000);
+        
+        updateUI(); renderAllProducts(); renderMyProducts(); updateStats(); 
+        if(currentUser) updateOnlineUsers();
+        if(!currentUser) setTimeout(()=>document.getElementById('loginModal').classList.remove('hidden'),300);
+    </script>
+</body>
+</html>
